@@ -1,0 +1,13 @@
+
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/Log-Events-Generator.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/csv-plugin.xml
+*.pyc
+.DS_Store
+output/*
+exp_output/*
+.idea/inspectionProfiles/Project_Default.xml
+.idea/rEgen.iml
