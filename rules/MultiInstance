@@ -1,0 +1,3 @@
+m_MultiInstance =
+NodeInstanceLog(log_date:ET, processInstanceId, connection, nodeId, nodeInstanceId, nodeType:"ForEachNode", referenceId, slaCompliance, sla_due_date, type:T, nodeContainerId)
+-: MultiInstance(eventTime:ET, processInstanceId, connection, nodeId, nodeInstanceId, nodeType, referenceId, slaCompliance, sla_due_date, nodeContainerId, type:T)

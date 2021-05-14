@@ -1,0 +1,5 @@
+m_InstanceEnds =
+ProcessInstanceLog(end_date:ET, start_date, processInstanceId:P, externalId, user_identity, outcome, id, parentProcessInstanceId, processId, processInstanceDescription, duration, processName, processType, processVersion, slaCompliance,
+    sla_due_date, correlationKey, status),
+NodeInstanceLog(log_date, processInstanceId:P, connection, nodeId, nodeInstanceId, nodeName, nodeType:"EndNode", referenceId, nodeContainerId, type:1)
+-: InstanceEnds(eventTime:ET, duration, outcome, status, connection, nodeId, nodeInstanceId, type, nodeName, nodeType, referenceId, processInstanceId:P)

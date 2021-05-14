@@ -1,0 +1,4 @@
+m_UserClaimsTask =
+TaskEvent(logTime:ET, processInstanceId, correlationKey, message, processType, taskId:T, type:"Claimed", userId, OPTLOCK, workItemId),
+AuditTaskImpl(taskId:T, actualOwner, createdBy, createdOn, description, dueDate, name, parentId, priority, processSessionId)
+-: UserClaimsTask(eventTime:ET, processInstanceId, correlationKey, message, processType, taskId:T, type, userId, OPTLOCK, workItemId, actualOwner, createdBy, createdOn, description, dueDate, name, parentId, priority, processSessionId)

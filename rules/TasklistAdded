@@ -1,0 +1,4 @@
+m_TasklistAdded =
+NodeInstanceLog(log_date:ET, processInstanceId:P, connection, nodeId, nodeInstanceId, nodeType:"HumanTaskNode", referenceId, slaCompliance, sla_due_date, type:0, nodeName, workItemId:W),
+TaskEvent(correlationKey, logTime, message, processInstanceId:P, processType, taskId, type:"Added", userId, workItemId:W)
+-: TasklistAdded(eventTime:ET, processInstanceId:P, connection, nodeId, nodeInstanceId, nodeType, referenceId, slaCompliance, sla_due_date, type, nodeName, workItemId:W, correlationKey, logTime, message, processType, taskId, userId)

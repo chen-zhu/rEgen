@@ -5,18 +5,16 @@ import csv
 import json
 from datetime import date, datetime
 import pandas as pd
-import numpy
+import math
 
 load_dotenv(override=True)
 CASE_ID_FIELD = os.getenv('CASE_ID_FIELD')
 OUTPUT_DIR = os.getenv('OUTPUT_DIR')
 SUBFILE_OUTPUT_DIR = os.getenv('SUBFILE_OUTPUT_DIR')
 EVENT_DATE = os.getenv('EVENT_DATE')
+SORTING_CONFIG = os.getenv('SORTING_CONFIG')
 
 # for sorting optimization
-MIN_TIME = 0
-MAX_TIME = 0
-EVEN_NUM = 0
 TIME_CHUNKS = []
 
 def write_csv(event_name, row):
@@ -30,36 +28,46 @@ def write_csv(event_name, row):
         return
 
     # file_path = str(pathlib.Path().absolute()) + "/" + SUBFILE_OUTPUT_DIR + str(row[CASE_ID_FIELD]) + ".csv"
-    file_path = str(pathlib.Path().absolute()) + "/" + SUBFILE_OUTPUT_DIR + "output.csv"
-    set_global(row[EVENT_DATE])
+    file_name = generate_file_name(row[EVENT_DATE])
+    file_path = str(pathlib.Path().absolute()) + "/" + SUBFILE_OUTPUT_DIR + file_name + ".csv"
     with open(file_path, "a+") as csv_file:
         csv_writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         csv_writer.writerow([row[CASE_ID_FIELD], event_name, row[EVENT_DATE], json.dumps(row, default=json_serial)])
     csv_file.close()
 
 
-def set_global(row_time):
-    # bad design here. Should've made it OOD
-    global MIN_TIME, MAX_TIME, EVEN_NUM
-    EVEN_NUM += 1
-    unix_time = 0
-    if isinstance(row_time, (datetime, date)):
-        unix_time = row_time.timestamp()
-    elif isinstance(row_time, str):
-        unix_time = datetime.strptime(row_time, "%Y-%m-%d %H:%M:%S.%f").timestamp()
-    if MIN_TIME == 0 or MAX_TIME == 0:
-        MIN_TIME = unix_time
-        MAX_TIME = unix_time
-    elif MIN_TIME > unix_time:
-        MIN_TIME = unix_time
-    elif MAX_TIME < unix_time:
-        MAX_TIME = unix_time
-    # print(MIN_TIME, MAX_TIME, EVEN_NUM)
+def generate_file_name(event_time):
+    global TIME_CHUNKS
+    file_name = ""
+    if isinstance(event_time, (datetime, date)):
+        # print(event_time.year, event_time.month, event_time.day, event_time.hour)
+        file_name = str(event_time.date())
+        if SORTING_CONFIG == 'HOUR':
+            file_name += "-" + str(event_time.hour)
+        elif SORTING_CONFIG == 'HALFHOUR':
+            SEC = event_time.minute // 30
+            file_name += "-" + str(event_time.hour) + "-" + str(SEC)
+        elif SORTING_CONFIG == 'MINUTE':
+            file_name += "-" + str(event_time.hour) + "-" + str(event_time.minute)
+    elif isinstance(event_time, str):
+        parsed_date = datetime.strptime(event_time, "%Y-%m-%d %H:%M:%S.%f")
+        # print(parsed_date.year, parsed_date.month, parsed_date.day, parsed_date.hour)
+        file_name = str(parsed_date.date())
+        if SORTING_CONFIG == 'HOUR':
+            file_name += "-" + str(parsed_date.hour)
+        elif SORTING_CONFIG == 'HALFHOUR':
+            SEC = parsed_date.minute // 30
+            file_name += "-" + str(parsed_date.hour) + "-" + str(SEC)
+        elif SORTING_CONFIG == 'MINUTE':
+            file_name += "-" + str(parsed_date.hour) + "-" + str(parsed_date.minute)
+    return file_name
 
-def sort_file(csv_file_path):
+
+def sort_file(csv_file_path, write_to):
     df = pd.read_csv(csv_file_path, names=["CASE_ID", "EVENT_NAME", "EVENT_DATE", "DATA"])
     sorted_df = df.sort_values(by=["EVENT_DATE"], ascending=True)
-    sorted_df.to_csv(csv_file_path, index=False, header=False)
+    #sorted_df.to_csv(csv_file_path, index=False, header=False)
+    sorted_df.to_csv(write_to, index=False, header=False, mode='a+')
 
 
 def json_serial(obj):
@@ -70,19 +78,12 @@ def json_serial(obj):
 
 def sorting_csv_files():
     process_nested_table_cache()
-    time_chunk()
+    write_dir = str(pathlib.Path().absolute()) + "/" + OUTPUT_DIR + "output.csv"
     dir_path = str(pathlib.Path().absolute()) + "/" + SUBFILE_OUTPUT_DIR
-    for file_name in os.listdir(dir_path):
+    files = sorted(os.listdir(dir_path))
+    for file_name in files:
         if '.csv' in file_name:
-            sort_file(dir_path + file_name)
-
-
-def time_chunk():
-    global MIN_TIME, MAX_TIME, EVEN_NUM, TIME_CHUNKS
-    chunk = (EVEN_NUM // 100) + 1
-    if chunk > 1:
-        TIME_CHUNKS = numpy.linspace(MIN_TIME, MAX_TIME + 1, chunk)
-        print(TIME_CHUNKS, MIN_TIME, MAX_TIME, chunk)
+            sort_file(dir_path + file_name, write_dir)
 
 
 def directory_prepare(only_clean_cache=False):
@@ -184,11 +185,11 @@ def process_nested_table_cache():
             csv_file.close()
 
             # output_file = output_file_path + case_id + ".csv"
-            output_file = output_file_path + "output.csv"
+            file_name = generate_file_name(read_info[2])
+            output_file = output_file_path + file_name + ".csv"
             with open(output_file, "a+") as csv_file:
                 csv_writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                 csv_writer.writerow(read_info)
-                set_global(read_info[2])
             csv_file.close()
 
 
