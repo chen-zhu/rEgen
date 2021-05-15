@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import csv
 import json
 from datetime import date, datetime
+from dateutil import parser
 import pandas as pd
 import math
 
@@ -50,7 +51,7 @@ def generate_file_name(event_time):
         elif SORTING_CONFIG == 'MINUTE':
             file_name += "-" + str(event_time.hour) + "-" + str(event_time.minute)
     elif isinstance(event_time, str):
-        parsed_date = datetime.strptime(event_time, "%Y-%m-%d %H:%M:%S.%f")
+        parsed_date = parser.parse(event_time)
         # print(parsed_date.year, parsed_date.month, parsed_date.day, parsed_date.hour)
         file_name = str(parsed_date.date())
         if SORTING_CONFIG == 'HOUR':
