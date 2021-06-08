@@ -1,0 +1,3 @@
+m_CloseWorkflow =
+NodeInstanceLog(log_date:ET, processInstanceId, connection, nodeId, nodeInstanceId, nodeType:"Join", referenceId, slaCompliance, sla_due_date, type:1)
+-: CloseWorkflow(eventTime:ET, processInstanceId, connection, nodeId, nodeInstanceId, nodeType, referenceId, slaCompliance, sla_due_date, type)

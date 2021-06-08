@@ -1,0 +1,3 @@
+m_UserWorksOnTask =
+TaskEvent(logTime:ET, processInstanceId, correlationKey, message, taskId, type:"Started", userId, workItemId)
+-: UserWorksOnTask(eventTime:ET, processInstanceId, correlationKey, message, taskId, type, userId, workItemId)

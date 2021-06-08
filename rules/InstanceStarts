@@ -1,0 +1,8 @@
+m_InstanceStarts =
+ProcessInstanceLog(start_date:ET, processInstanceId:P, externalId, user_identity, id, parentProcessInstanceId, processId, processInstanceDescription, processName, processType, processVersion, slaCompliance,
+    sla_due_date, correlationKey),
+NodeInstanceLog(log_date:Y, processInstanceId:P, connection, nodeId, nodeInstanceId, nodeName, nodeType:"StartNode", processId, referenceId, nodeContainerId, type:1, slaCompliance, sla_due_date),
+VariableInstanceLog(log_date:Y, processInstanceId:P, oldValue, value, variableId, variableInstanceId)
+-: InstanceStarts(eventTime:ET, id, externalId, user_identity, parentProcessInstanceId, processId, processInstanceDescription, processInstanceId:P, processName, processType, processVersion, slaCompliance, sla_due_date, correlationKey, connection, nodeContainerId, nodeId,
+type, nodeInstanceId, nodeName, nodeType, referenceId,
+VariableInstances<P>(log_date:Y, oldValue, processInstanceId:P, value, variableId, variableInstanceId))

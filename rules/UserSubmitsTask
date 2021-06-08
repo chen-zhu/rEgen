@@ -1,0 +1,6 @@
+m_UserSubmitsTask=
+TaskEvent(logTime:L, processInstanceId:P, correlationKey, message, taskId:T, type:"Updated", userId, workItemId),
+AuditTaskImpl(processInstanceId:P, status, lastModificationDate, taskId:T),
+VariableInstanceLog(log_date:L, processInstanceId:P, oldValue, value, variableId, variableInstanceId)
+-: UserSubmitsTask(eventTime:L, correlationKey, message, processInstanceId:P, taskId:T, type, userId, workItemId, lastModificationDate, status,
+UserSubmitsTaskVariables<P,T>(log_date, oldValue, processInstanceId:P, value, variableId, variableInstanceId))

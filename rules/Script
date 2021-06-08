@@ -1,0 +1,3 @@
+m_Script =
+NodeInstanceLog(log_date:ET, processInstanceId, connection, nodeId, nodeInstanceId, nodeType:"ActionNode", referenceId, slaCompliance, sla_due_date, type:T, nodeContainerId)
+-: Script(eventTime:ET, processInstanceId, connection, nodeId, nodeInstanceId, nodeType, referenceId, slaCompliance, sla_due_date, nodeContainerId, type:T)

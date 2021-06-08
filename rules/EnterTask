@@ -1,0 +1,4 @@
+m_EnterTask =
+NodeInstanceLog(log_date:ET, processInstanceId:P, connection, nodeId, nodeInstanceId, nodeType:"HumanTaskNode", referenceId, slaCompliance, sla_due_date, type:0, nodeName, workItemId:W),
+TaskEvent(correlationKey, logTime, message, processInstanceId:P, processType, taskId, type:"Activated", userId, workItemId:W)
+-: EnterTask(eventTime:ET, processInstanceId:P, connection, nodeId, nodeInstanceId, nodeType, referenceId, slaCompliance, sla_due_date, type, nodeName, workItemId:W, correlationKey, logTime, message, processType, taskId, userId)
